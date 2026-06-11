@@ -28,22 +28,40 @@ const recommendCars = async (req, res) => {
       budget,
       seatingCapacity,
       fuelType,
-      usagePattern,
-      preferredBrand,
-      importantFactor,
+       transmission,
+       carType,
+       usagePattern,
+       preferredBrand,
+       importantFactor,
     } = req.body;
 
     // ==========================
     // STAGE 1 : HARD FILTERING
     // ==========================
 
-    let filteredCars = await Car.find({
-      fuelType,
-      seatingCapacity: Number(seatingCapacity),
-      "price.exShowroom": {
-        $lte: Number(budget),
-      },
-    });
+    const query = {
+  fuelType,
+
+  seatingCapacity:
+    Number(seatingCapacity),
+
+  "price.exShowroom": {
+    $lte: Number(budget),
+  },
+};
+
+if (transmission) {
+  query.transmission =
+    transmission;
+}
+
+if (carType) {
+  query.carType =
+    carType;
+}
+
+let filteredCars =
+  await Car.find(query);
 
     let strictMatch = true;
 
@@ -82,6 +100,17 @@ const recommendCars = async (req, res) => {
       let maxScore = 0;
 
       const reasons = [];
+      if (transmission) {
+  reasons.push(
+    `Matches ${transmission} transmission preference`
+  );
+}
+
+if (carType) {
+  reasons.push(
+    `Matches preferred ${carType} body style`
+  );
+}
 
       // --------------------------
       // Usage Pattern
@@ -150,89 +179,96 @@ const recommendCars = async (req, res) => {
       // Important Factor
       // --------------------------
 
-      maxScore += 40;
+      
+maxScore +=
+  importantFactor.length * 15;
 
-      switch (importantFactor) {
-        case "Safety":
+importantFactor.forEach(
+  (factor) => {
 
-          if (car.safetyRating >= 5) {
-            score += 40;
+    switch (factor) {
 
-            reasons.push(
-              "Excellent safety rating"
-            );
-          } else if (car.safetyRating >= 4) {
-            score += 30;
-          } else if (car.safetyRating >= 3) {
-            score += 20;
-          }
+      case "Safety":
 
-          break;
+        if (
+          car.safetyRating >= 5
+        ) {
 
-        case "Mileage":
+          score += 15;
 
-          if (car.mileage >= 25) {
-            score += 40;
+          reasons.push(
+            "Excellent safety rating"
+          );
+        }
 
-            reasons.push(
-              "Outstanding mileage"
-            );
-          } else if (car.mileage >= 20) {
-            score += 30;
-          } else if (car.mileage >= 15) {
-            score += 20;
-          }
+        break;
 
-          break;
+      case "Mileage":
 
-        case "Performance":
+        if (
+          car.mileage >= 20
+        ) {
 
-          if (car.engineCapacity >= 2000) {
-            score += 40;
+          score += 15;
 
-            reasons.push(
-              "Strong performance engine"
-            );
-          } else if (
-            car.engineCapacity >= 1500
-          ) {
-            score += 30;
-          } else if (
-            car.engineCapacity >= 1200
-          ) {
-            score += 20;
-          }
+          reasons.push(
+            "Excellent mileage"
+          );
+        }
 
-          break;
+        break;
 
-        case "Features":
+      case "Performance":
 
-          if (
-            car.features &&
-            car.features.length >= 5
-          ) {
-            score += 40;
+        if (
+          car.engineCapacity >=
+          1500
+        ) {
 
-            reasons.push(
-              "Loaded with premium features"
-            );
-          } else if (
-            car.features &&
-            car.features.length >= 3
-          ) {
-            score += 30;
-          } else if (
-            car.features &&
-            car.features.length >= 1
-          ) {
-            score += 20;
-          }
+          score += 15;
 
-          break;
+          reasons.push(
+            "Strong performance"
+          );
+        }
 
-        default:
-          break;
-      }
+        break;
+
+      case "Features":
+
+        if (
+          car.features.length >= 4
+        ) {
+
+          score += 15;
+
+          reasons.push(
+            "Loaded with premium features"
+          );
+        }
+
+        break;
+
+      case "Comfort":
+
+        if (
+          car.features.includes(
+            "Ventilated Seats"
+          )
+        ) {
+
+          score += 15;
+
+          reasons.push(
+            "Comfort-focused cabin"
+          );
+        }
+
+        break;
+    }
+
+  }
+);
 
       // --------------------------
       // Mandatory Match Reasons

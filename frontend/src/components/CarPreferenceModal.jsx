@@ -5,9 +5,11 @@ const CarPreferenceModal = ({ isOpen, onClose, onSubmit }) => {
     budget: "",
     seatingCapacity: "",
     fuelType: "",
+    transmission: "",
+  carType: "",
     usagePattern: "",
     preferredBrand: "",
-    importantFactor: "",
+    importantFactor: [],
   });
 
   const handleChange = (e) => {
@@ -124,6 +126,64 @@ const CarPreferenceModal = ({ isOpen, onClose, onSubmit }) => {
               <option value="EV">EV</option>
             </select>
           </div>
+          {/* Transmission */}
+          <div>
+  <label className="block font-medium mb-2">
+    Transmission
+  </label>
+
+  <select
+    name="transmission"
+    value={formData.transmission}
+    onChange={handleChange}
+    className="w-full border rounded-lg p-3"
+  >
+    <option value="">
+      Select Transmission
+    </option>
+
+    <option value="Manual">
+      Manual
+    </option>
+
+    <option value="Automatic">
+      Automatic
+    </option>
+  </select>
+</div>
+{/* Car Type */}
+<div>
+  <label className="block font-medium mb-2">
+    Car Type
+  </label>
+
+  <select
+    name="carType"
+    value={formData.carType}
+    onChange={handleChange}
+    className="w-full border rounded-lg p-3"
+  >
+    <option value="">
+      Select Car Type
+    </option>
+
+    <option value="SUV">
+      SUV
+    </option>
+
+    <option value="Sedan">
+      Sedan
+    </option>
+
+    <option value="MUV">
+      MUV
+    </option>
+
+    <option value="Hatchback">
+      Hatchback
+    </option>
+  </select>
+</div>
 
           {/* Usage Pattern */}
           <div>
@@ -163,25 +223,73 @@ const CarPreferenceModal = ({ isOpen, onClose, onSubmit }) => {
 
           {/* Important Factor */}
           <div>
-            <label className="block font-medium mb-2">
-              Most Important Factor
-            </label>
 
-            <select
-              name="importantFactor"
-              value={formData.importantFactor}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-              required
-            >
-              <option value="">Select</option>
-              <option value="Safety">Safety</option>
-              <option value="Mileage">Mileage</option>
-              <option value="Comfort">Comfort</option>
-              <option value="Performance">Performance</option>
-              <option value="Features">Features</option>
-            </select>
-          </div>
+<label className="block font-medium mb-3">
+Most Important Factors
+</label>
+
+<div className="space-y-2">
+
+{[
+  "Safety",
+  "Mileage",
+  "Comfort",
+  "Performance",
+  "Features",
+].map((factor) => (
+
+<label
+  key={factor}
+  className="flex items-center gap-2"
+>
+
+<input
+  type="checkbox"
+  value={factor}
+
+  checked={formData.importantFactor.includes(
+    factor
+  )}
+
+  onChange={(e) => {
+
+    if (e.target.checked) {
+
+      setFormData({
+        ...formData,
+
+        importantFactor: [
+          ...formData.importantFactor,
+          factor,
+        ],
+      });
+
+    } else {
+
+      setFormData({
+        ...formData,
+
+        importantFactor:
+          formData.importantFactor.filter(
+            (item) =>
+              item !== factor
+          ),
+      });
+
+    }
+
+  }}
+/>
+
+{factor}
+
+</label>
+
+))}
+
+</div>
+
+</div>
 
           <button
             type="submit"

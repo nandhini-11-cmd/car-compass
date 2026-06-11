@@ -60,6 +60,8 @@ The recommendation system uses a two-stage process:
 
 Results are ranked by match percentage and returned with recommendation reasons.
 
+Session-based popup display – The recommendation popup is shown only once per browser session to avoid interrupting users repeatedly. To view it again, start a new browser session.
+
 ## Installation
 
 ### Backend

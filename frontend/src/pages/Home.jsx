@@ -26,7 +26,7 @@ const Home = () => {
         "carPreferenceShown",
         "true"
       );
-    }, 6000);
+    }, 8000);
 
     return () => clearTimeout(timer);
   }
@@ -99,7 +99,7 @@ const Home = () => {
 
       {/* Hero Section */}
       <div className="text-center mb-12">
-        <h1 className="text-6xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
+        <h1 className="text-6xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent animate-bounce">
           CarCompass
         </h1>
 

@@ -113,7 +113,7 @@ const Home = () => {
       {cars.length > 0 && cars[0]?.matchPercentage && (
         <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl p-6 mb-8 shadow-lg">
           <h2 className="text-2xl font-bold">
-            🎯 Personalized Recommendations arReady...
+            🎯 Personalized Recommendations are Ready...
           </h2>
 
           <p className="mt-2">

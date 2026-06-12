@@ -7,8 +7,7 @@ const CarPreferenceModal = ({ isOpen, onClose, onSubmit }) => {
     fuelType: "",
     transmission: "",
   carType: "",
-    usagePattern: "",
-    preferredBrand: "",
+    usagePattern: "",    
     importantFactor: [],
   });
 
@@ -101,8 +100,9 @@ const CarPreferenceModal = ({ isOpen, onClose, onSubmit }) => {
               required
             >
               <option value="">Select</option>
-              <option value="5">5 Seater</option>
-              <option value="7">7 Seater</option>
+              <option value="5">Small Family (5 Seater)</option>
+              <option value="6">Large Family (6 Seater)</option>
+              <option value="7">Joint Family (7+ Seater)</option>
             </select>
           </div>
 
@@ -205,22 +205,7 @@ const CarPreferenceModal = ({ isOpen, onClose, onSubmit }) => {
             </select>
           </div>
 
-          {/* Brand */}
-          <div>
-            <label className="block font-medium mb-2">
-              Preferred Brand (Optional)
-            </label>
-
-            <input
-              type="text"
-              name="preferredBrand"
-              value={formData.preferredBrand}
-              onChange={handleChange}
-              placeholder="Hyundai, Tata, Mahindra..."
-              className="w-full border rounded-lg p-3"
-            />
-          </div>
-
+          
           {/* Important Factor */}
           <div>
 

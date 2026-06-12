@@ -119,7 +119,24 @@ const CarCard = ({ car }) => {
             </div>
 
           </div>
+          
         )}
+        <div className="mt-5">
+  <button
+    className="
+      w-full
+      bg-blue-500
+      text-white
+      py-2
+      rounded-xl
+      hover:bg-blue-600
+      transition
+      font-medium
+    "
+  >
+    Know More
+  </button>
+</div>
 
       </div>
     </div>
